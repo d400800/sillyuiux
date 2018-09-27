@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Scroll</title>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #222;
+        }
+        .circle {
+            width: 100px;
+            height: 100px;
+            border-radius: 100%;
+            margin: 100px auto 0;
+        }
+        #test1 {
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            position: fixed;
+        }
+        .container {
+            height: 2000px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="test1">
+            <div id="circle" class="circle" style="background-color: gold;" scroll-begin="0" scroll-end="500"></div>
+
+            <div id="circle2" class="circle" style="background-color: aliceblue;" scroll-begin="500" scroll-end="700"></div>
+        </div>
+    </div>
+
+    <script>
+        function scrollElementFactory(id) {
+            self = this;
+            this.el = document.getElementById(id);
+            this.scrollBegin = this.el.getAttribute("scroll-begin");
+            this.scrollEnd = this.el.getAttribute("scroll-end");
+            
+            this.bindEvents(self);
+        }
+        
+        scrollElementFactory.prototype.bindEvents = function(self) {
+            window.addEventListener("scroll", function() {
+                self.el.style.opacity = self.setElementStyle(self.el, self.scrollBegin, self.scrollEnd, "decrease") / 100;
+                self.el.style.transform = `scale(${1 + self.setElementStyle(self.el, self.scrollBegin, self.scrollEnd, "increase") / 100})`;
+            })
+        }
+
+        scrollElementFactory.prototype.setElementStyle = function(el, scrollBegin, scrollEnd, direction) {
+            let lastScrollTop = 0;
+            let percentage;
+            let st = window.pageYOffset || document.documentElement.scrollTop;
+
+            // if (st > lastScrollTop) {
+            //     console.log("scroll down");
+            // } else {
+            //     console.log("scroll up");
+            // }
+
+            console.log(`${el.getAttribute('id')} : ${st > scrollBegin}`);
+            console.log(`${st} : ${scrollBegin}`)
+        
+            if(st < scrollBegin) {
+                console.log("shit");
+                return;
+            }
+
+
+            if(direction == "decrease") {
+                percentage = 100 - ((st - scrollBegin) / ((scrollEnd - scrollBegin) / 100));
+                // debugger;
+                if(percentage <= 0) return;
+            } else {
+                percentage = ((st - scrollBegin) / ((scrollEnd - scrollBegin) / 100));
+                if(percentage >= 100) return;
+            }
+            return percentage;
+            lastScrollTop = st <= 0 ? 0 : st;
+        }
+
+        let circle = new scrollElementFactory("circle");
+        let circle2 = new scrollElementFactory("circle2");
+
+    </script>
+</body>
+</html>

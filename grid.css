@@ -1,0 +1,82 @@
+body {
+    margin: 0;
+    padding: 0;
+    display: grid;
+    height: 100vh;
+    grid-template-rows: auto 50px;
+    grid-template-columns: 12% auto;
+    grid-template-areas: 
+        "sidebar right"
+        "footer footer"
+}
+
+.container {
+    display: grid;
+}
+
+.logo {
+    color: #fff;
+    text-align: center;
+    grid-column-start: logo-start;
+    grid-column-end: span nav-end;
+    background-color: blanchedalmond;
+}
+
+.header {
+    display: grid;
+    background-color: aquamarine;
+    grid-template-columns: [logo-start] fit-content(20%) [nav-start] auto [nav-end];
+}
+
+nav ul {
+    margin: 0;
+    display: flex;
+    list-style: none;
+    justify-content: flex-end;
+}
+
+nav ul li {
+    color: #fff;
+    margin-right: 12px;
+}
+
+.hero {
+    padding: 2em;
+    display: grid;
+    background-color: #36adad;
+    border-top: 5px solid #2ea0a0;
+    grid-template-columns: repeat(2, auto);
+}
+
+.mountain {
+    margin: 0 auto;
+    display: block;
+    max-width: 100%;
+}
+
+.sidebar {
+    padding: 1em;
+    color: #fff;
+    grid-area: sidebar;
+    background-color: #1c9090;
+}
+
+.main {
+    display: grid;
+    grid-area: right;
+    grid-template-rows: 51px fit-content(30%);
+}
+
+.footer {
+    grid-area: footer;
+    background-color: lightgray;
+}
+
+.icons {
+    margin: 0;
+    padding: 10px;
+    display: grid;
+    list-style: none;
+    grid-column-gap: 8px;
+    grid-template-columns: repeat(5, auto);
+}
