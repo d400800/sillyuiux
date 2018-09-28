@@ -18,6 +18,13 @@
     </div>
 
     <button id="btn1">button 1</button>
-    <script src="main.js"></script>
+    
+    <script>
+        var dot1 = document.getElementById("dot1");
+        var btn1 = document.getElementById("btn1");
+        btn1.addEventListener("click", function() {
+            dot1.classList.toggle("animate");
+        });
+    </script>
 </body>
 </html>

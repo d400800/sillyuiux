@@ -33,13 +33,15 @@
 <body>
     <div class="container">
         <div id="test1">
-            <div id="circle" class="circle" style="background-color: gold;" scroll-begin="0" scroll-end="500"></div>
+            <div id="circle" class="circle" style="background-color: gold;" scroll-begin="0" scroll-end="200"></div>
 
             <div id="circle2" class="circle" style="background-color: aliceblue;" scroll-begin="500" scroll-end="700"></div>
         </div>
     </div>
 
     <script>
+        var lastScrollTop = 0;
+
         function scrollElementFactory(id) {
             self = this;
             this.el = document.getElementById(id);
@@ -57,35 +59,37 @@
         }
 
         scrollElementFactory.prototype.setElementStyle = function(el, scrollBegin, scrollEnd, direction) {
-            let lastScrollTop = 0;
+            // let lastScrollTop = 0;
             let percentage;
             let st = window.pageYOffset || document.documentElement.scrollTop;
 
-            // if (st > lastScrollTop) {
-            //     console.log("scroll down");
-            // } else {
-            //     console.log("scroll up");
-            // }
-
-            console.log(`${el.getAttribute('id')} : ${st > scrollBegin}`);
             console.log(`${st} : ${scrollBegin}`)
-        
-            if(st < scrollBegin) {
-                console.log("shit");
-                return;
+            
+            if (st > lastScrollTop) {
+                console.log("scroll down");
+                if(st > scrollEnd) {
+                    console.log("hidden");
+                    el.style.visibility  = "hidden";
+                }
+            } else {
+                console.log("scroll up");
+                if(st < scrollEnd) {
+                    console.log("visible");
+                    el.style.visibility  = "visible";
+                }
             }
+            
+            if(st < scrollBegin) return;
 
-
-            if(direction == "decrease") {
-                percentage = 100 - ((st - scrollBegin) / ((scrollEnd - scrollBegin) / 100));
-                // debugger;
+            if (direction == "decrease") {
+                percentage = 100 - ((st - scrollBegin) / ((scrollEnd - scrollBegin) / 100));                
                 if(percentage <= 0) return;
             } else {
                 percentage = ((st - scrollBegin) / ((scrollEnd - scrollBegin) / 100));
                 if(percentage >= 100) return;
             }
-            return percentage;
             lastScrollTop = st <= 0 ? 0 : st;
+            return percentage;
         }
 
         let circle = new scrollElementFactory("circle");
